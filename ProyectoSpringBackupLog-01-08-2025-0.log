@@ -1,0 +1,9 @@
+2025<->08<->01 19/30/57 [RMI TCP Connection(20)-127.0.0.1] INFO  Commencing graceful shutdown. Waiting for active requests to complete
+2025<->08<->01 19/30/57 [tomcat-shutdown] INFO  Graceful shutdown complete
+2025<->08<->01 19/37/29 [main] INFO  Starting ProyectoSpringToolApplication using Java 21.0.7 with PID 18440 (C:\Users\rusok\Documents\workspace-spring-tools-for-eclipse-4.31.0.RELEASE\ProyectoSpringTool\target\classes started by rusok in C:\Users\rusok\Documents\workspace-spring-tools-for-eclipse-4.31.0.RELEASE\ProyectoSpringTool)
+2025<->08<->01 19/37/29 [main] INFO  No active profile set, falling back to 1 default profile: "default"
+2025<->08<->01 19/37/30 [main] INFO  Tomcat initialized with port 7001 (http)
+2025<->08<->01 19/37/30 [main] INFO  Starting service [Tomcat]
+2025<->08<->01 19/37/30 [main] INFO  Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025<->08<->01 19/37/30 [main] INFO  Initializing Spring embedded WebApplicationContext
+2025<->08<->01 19/37/30 [main] INFO  Root WebApplicationContext: initialization completed in 1371 ms

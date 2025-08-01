@@ -1,0 +1,10 @@
+2025<->08<->01 19/37/31 [main] INFO  Exposing 4 endpoints beneath base path '/actuator'
+2025<->08<->01 19/37/31 [main] INFO  Tomcat started on port 7001 (http) with context path '/'
+2025<->08<->01 19/37/31 [main] INFO  Started ProyectoSpringToolApplication in 2.994 seconds (process running for 3.867)
+2025<->08<->01 19/37/32 [RMI TCP Connection(6)-127.0.0.1] INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025<->08<->01 19/37/32 [RMI TCP Connection(6)-127.0.0.1] INFO  Initializing Servlet 'dispatcherServlet'
+2025<->08<->01 19/37/32 [RMI TCP Connection(6)-127.0.0.1] INFO  Completed initialization in 1 ms
+2025<->08<->01 19/37/42 [http-nio-7001-exec-1] INFO  Se alcanzó al método saludo() retornando un saludo.
+2025<->08<->01 19/37/49 [http-nio-7001-exec-3] INFO  Se alcanzó el método cerrar() por lo que el cliente no recibe respuesta alguna.
+2025<->08<->01 19/37/49 [http-nio-7001-exec-3] INFO  Commencing graceful shutdown. Waiting for active requests to complete
+2025<->08<->01 19/38/19 [http-nio-7001-exec-3] INFO  Shutdown phase 2147482623 ends with 1 bean still running after timeout of 30000ms: [webServerGracefulShutdown]
