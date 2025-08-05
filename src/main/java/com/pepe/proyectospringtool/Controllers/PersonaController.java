@@ -1,6 +1,8 @@
 package com.pepe.proyectospringtool.Controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,5 +18,10 @@ public class PersonaController {
 	public String prueba(@RequestBody Persona p) {
 		System.out.printf("La persona %s %s tiene %d años.\n", p.getNombre(),p.getApellido(),p.getEdad());
 		return "Listo";
+	}
+	@GetMapping("/algo/{valor}") // http://localhost:7001/persona/algo/{valor} [GET]
+	@ResponseBody
+	public void prueba2(@PathVariable("valor") String v) {
+		System.out.println("La variable del path es: "+v);
 	}
 }

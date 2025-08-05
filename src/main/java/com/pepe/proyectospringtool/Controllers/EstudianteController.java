@@ -1,0 +1,54 @@
+package com.pepe.proyectospringtool.Controllers;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.pepe.proyectospringtool.Modelos.Estudiante;
+
+@Controller
+public class EstudianteController {
+	private static Map<String,Estudiante> estudiantes =
+			new HashMap<>();
+	static {
+		Estudiante e1 = new Estudiante(1,"Pepe","Perales");
+		Estudiante e2 = new Estudiante(2,"Ana","Sosa");
+		Estudiante e3 = new Estudiante(3,"Sofía","Rocha");
+		estudiantes.put("1", e1);
+		estudiantes.put("2", e2);
+		estudiantes.put("3", e3);
+	}
+	@GetMapping("/estudiante") // http://localhost:7001/estudiante [GET]
+	public ResponseEntity<Object> getEstudiantes(){
+		return new ResponseEntity<>(estudiantes.values(), HttpStatus.OK);
+	}
+	@GetMapping("/estudiante/{id}") // http://localhost:7001/estudiante [GET]
+	public ResponseEntity<Object> getEstudianteById(@PathVariable("id") String id){
+		return ResponseEntity.ok(estudiantes.get(id));
+	}
+	
+	@PostMapping("/estudiante") // http://localhost:7001/estudiante [POST]
+	public ResponseEntity<Object> nuevoEstudiante(@RequestBody Estudiante estudiante){
+		estudiantes.put(estudiante.getId()+"", estudiante);
+		URI ubicacionRecurso = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(estudiante.getId()).toUri();
+		return ResponseEntity.created(ubicacionRecurso).build(); 
+	}
+	
+	@PutMapping("/estudiante/{id}")
+	public ResponseEntity<Object> modificarEstudiante(@PathVariable("id") String id, @RequestBody Estudiante estudiante){
+		estudiantes.remove(id);
+		estudiante.setId(Integer.parseInt(id));
+		estudiantes.put(id, estudiante);
+		return new ResponseEntity<>("Se actualizaron los datos del estudiante " +id, HttpStatus.OK);
+	}
+}
