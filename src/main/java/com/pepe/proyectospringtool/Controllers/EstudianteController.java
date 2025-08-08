@@ -1,5 +1,6 @@
 package com.pepe.proyectospringtool.Controllers;
 
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,9 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,4 +54,20 @@ public class EstudianteController {
 		estudiantes.put(id, estudiante);
 		return new ResponseEntity<>("Se actualizaron los datos del estudiante " +id, HttpStatus.OK);
 	}
+	
+	@PatchMapping("/estudiante/{id}") // http://localhost:7001/estudiante/12 [PATCH]
+	public ResponseEntity<String> modificarEstudianteConPatch(@PathVariable("id") String id, @RequestBody Map<String,Object> atributosModificados){
+		Estudiante estOriginal = estudiantes.get(id);
+		atributosModificados.forEach((atributo,valorNuevo)->{
+			Field campo = ReflectionUtils.findField(Estudiante.class, atributo);
+			if(campo != null) {
+				campo.setAccessible(true);
+				ReflectionUtils.setField(campo, estOriginal, valorNuevo);
+			}
+		});
+		estudiantes.remove(id);
+		estudiantes.put(id, estOriginal);
+		return new ResponseEntity<>("Se modificó el estudiante (PATCH)", HttpStatus.OK);
+	}
+	
 }
