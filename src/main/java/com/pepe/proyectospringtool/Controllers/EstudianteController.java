@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
 import com.pepe.proyectospringtool.Modelos.Estudiante;
 
 @Controller
 public class EstudianteController {
+	@Autowired
+	ObjectMapper objectMapper;
+	
 	private static Map<String,Estudiante> estudiantes =
 			new HashMap<>();
 	static {
@@ -68,6 +75,21 @@ public class EstudianteController {
 		estudiantes.remove(id);
 		estudiantes.put(id, estOriginal);
 		return new ResponseEntity<>("Se modificó el estudiante (PATCH)", HttpStatus.OK);
+	}
+	@PatchMapping(path="/estudiante/patch/{id}", consumes="application/json-patch+json")
+	public ResponseEntity<String> modificarEstudianteConJsonPatch(@PathVariable("id") String id, @RequestBody JsonPatch atributosModificados){
+		try {
+			Estudiante estOriginal = estudiantes.get(id);
+			JsonNode patcheado = atributosModificados
+			.apply(objectMapper.convertValue(estOriginal, JsonNode.class));
+			Estudiante estActualizado = objectMapper.treeToValue(patcheado, Estudiante.class);
+			estudiantes.remove(id);
+			estudiantes.put(id, estActualizado);
+			return new ResponseEntity<>("Se modificó el estudiante (JSON PATCH)", HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Error fatal al modificar al estudiante "+id, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 }
