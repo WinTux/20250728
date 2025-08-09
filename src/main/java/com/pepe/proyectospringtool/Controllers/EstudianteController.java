@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -91,5 +92,12 @@ public class EstudianteController {
 			return new ResponseEntity<>("Error fatal al modificar al estudiante "+id, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+	@GetMapping("/estudiante/status")
+	public ResponseEntity<String> headersPersonalizados(){
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Modo-Empresa", "CRISIS");
+		headers.add("Permiso-cifrado", "true");
+		headers.add("Cantidad-almacenes", "245");
+		return new ResponseEntity<>("Respuesta con cabeceras propias",headers, HttpStatus.OK);
+	}
 }
