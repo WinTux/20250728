@@ -1,7 +1,10 @@
 package com.pepe.proyectospringtool.Controllers;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +20,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.pepe.proyectospringtool.Modelos.Estudiante;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class EstudianteController {
@@ -99,5 +105,34 @@ public class EstudianteController {
 		headers.add("Permiso-cifrado", "true");
 		headers.add("Cantidad-almacenes", "245");
 		return new ResponseEntity<>("Respuesta con cabeceras propias",headers, HttpStatus.OK);
+	}
+	
+	@GetMapping("/estudiante/edad") // http://localhost:7001/estudiante/edad?yearNacimiento=2000
+	public ResponseEntity<String> age(@RequestParam("yearNacimiento") int yearNacimiento){
+		if(estaEnElFuturo(yearNacimiento)) {
+			return ResponseEntity
+					.badRequest()
+					.body("El año de nacimiento no puede estar en el futuro ("+yearNacimiento+")");
+		}
+		LocalDate fechaActual = LocalDate.now();
+		DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.header("anyo-nacimiento", yearNacimiento+"")
+				.header("fecha-del-servidor", fechaActual.format(formateador))
+				.body("La edad es de " +calcularEdad(yearNacimiento) + " año(s)");
+	}
+	private int calcularEdad(int yearNacimiento) {
+		return java.time.Year.now().getValue() - yearNacimiento;
+	}
+	private boolean estaEnElFuturo(int yearNacimiento) {
+		return yearNacimiento > java.time.Year.now().getValue();
+	}
+	
+	@GetMapping("/estudiante/pruebacruda")
+	public void ejemploCrudo(HttpServletResponse response) throws IOException{
+		response.setHeader("Codigo-depuracion", "XZ-400");
+		response.setStatus(200);
+		response.getWriter().println("Éxito con el ejemplo crudo");
 	}
 }
