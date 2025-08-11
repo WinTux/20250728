@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
+import com.pepe.proyectospringtool.Exceptions.EstudianteNoEncontradoException;
 import com.pepe.proyectospringtool.Modelos.Estudiante;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -65,6 +66,8 @@ public class EstudianteController {
 	
 	@PutMapping("/estudiante/{id}")
 	public ResponseEntity<Object> modificarEstudiante(@PathVariable("id") String id, @RequestBody Estudiante estudiante){
+		if(!estudiantes.containsKey(id))
+			throw new EstudianteNoEncontradoException();
 		estudiantes.remove(id);
 		estudiante.setId(Integer.parseInt(id));
 		estudiantes.put(id, estudiante);
