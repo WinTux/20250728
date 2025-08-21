@@ -10,5 +10,6 @@ import com.pepe.proyectospringtool.Modelos.Est;
 @Repository
 public interface EstudianteRepository extends JpaRepository<Est, Integer>{
 	List<Est> getByCarreraid(int cid);
-	List<Est> findByApellidoAndEstado(String ap, Boolean estado);
+	List<Est> findByApellidoAndEstado(String ap, boolean estado);
+	List<Est> findByNombreAndApellido(String nom, String ap);
 }
