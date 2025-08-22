@@ -35,4 +35,8 @@ public class EstudianteService {
 		estudianteRepo.save(est);
 		System.out.println("> "+ est.getNombre()+" "+est.getApellido()+" fue registrado");
 	}
+	
+	public void eliminar(Est est) {
+		estudianteRepo.delete(est);
+	}
 }
