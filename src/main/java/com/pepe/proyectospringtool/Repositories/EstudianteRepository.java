@@ -13,6 +13,6 @@ public interface EstudianteRepository extends JpaRepository<Est, Integer>{
 	List<Est> getByCarreraid(int cid);
 	List<Est> findByApellidoAndEstado(String ap, boolean estado);
 	List<Est> findByNombreAndApellido(String nom, String ap);
-	@Query("SELECT e FROM estudiante e WHERE e.estado = true")
+	@Query("SELECT e FROM Est e WHERE e.estado = true")
 	List<Est> obtenerEstudiantesActivos();
 }

@@ -2,9 +2,11 @@ package com.pepe.proyectospringtool.Controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,8 @@ public class EstController {
 	ObjectMapper objectMapper;
 	@Autowired
 	private EstudianteService estServ;
+	@Autowired
+	private MessageSource messageSource;
 	
 	@GetMapping // https://localhost:7001/api/v1/estudiantes [GET]
 	public ResponseEntity<Object> getEsetudiantes(){
@@ -80,5 +84,10 @@ public class EstController {
 		Est estDDBB = estudiante.get();
 		estServ.eliminar(estDDBB);
 		return new ResponseEntity<>("Se eliminó al estudiante "+matricula, HttpStatus.OK);
+	}
+	
+	@GetMapping("/saludo") // https://localhost:7001/api/v1/estudiantes/saludo
+	public String saludar(Locale locale) {
+		return messageSource.getMessage("saludo", null, locale);
 	}
 }
